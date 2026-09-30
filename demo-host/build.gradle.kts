@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":android-plugin"))
+    implementation(project(":android-all"))
     implementation("org.lynxsdk.lynx:lynx:4.1.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
 }

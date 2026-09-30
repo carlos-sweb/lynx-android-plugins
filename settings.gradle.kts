@@ -15,5 +15,12 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "lynx-android-plugins"
-include(":android-plugin")
+include(":android-core")
+include(":android-battery")
+include(":android-camera")
+include(":android-device")
+include(":android-geolocation")
+include(":android-network")
+include(":android-vibration")
+include(":android-all")
 include(":demo-host")

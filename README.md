@@ -4,6 +4,26 @@ Native Android connectors for Lynx. This repository is intentionally
 Android-only: Lynx remains multi-platform, but these modules depend on Android
 APIs and do not attempt to create a misleading cross-platform abstraction.
 
+## Module layout
+
+Every capability is an independent Android library. Add only the modules an
+application needs; this keeps Android manifest permissions and runtime code
+bounded to the selected capabilities.
+
+| Gradle module | Capability | Manifest contribution |
+| --- | --- | --- |
+| `:android-core` | Shared Lynx event bridge | None |
+| `:android-battery` | Battery level and charging state | None |
+| `:android-camera` | External camera capture | `FileProvider` only |
+| `:android-device` | Non-identifying device information | None |
+| `:android-geolocation` | One-shot foreground location | Coarse and fine location |
+| `:android-network` | Network snapshot | None |
+| `:android-vibration` | Bounded vibration | `VIBRATE` |
+| `:android-all` | Opt-in convenience aggregate | All feature contributions |
+
+`android-all` preserves the original all-in-one registration API for the demo
+host. Production applications should depend on individual feature modules.
+
 ## Included plugins
 
 | Lynx module | Initial operation | Permission / boundary |
@@ -47,17 +67,27 @@ six modules.
 
 ## Host integration
 
-Add the library as a Gradle module (or publish `android-plugin` to your Maven
-repository), then register the plugins when you create the `LynxView`:
+Add selected feature libraries as Gradle modules. For example, an application
+that needs geolocation and network uses:
+
+```kotlin
+dependencies {
+    implementation(project(":android-geolocation"))
+    implementation(project(":android-network"))
+}
+```
+
+Then register the selected plugins when you create the `LynxView`:
 
 ```kotlin
 val builder = LynxViewBuilder()
-LynxAndroidPlugins.register(builder)
+LynxGeolocationPlugin.register(builder)
+LynxNetworkPlugin.register(builder)
 val lynxView = builder.build(this)
 ```
 
-The host must forward the Activity callbacks required by the location
-permission and camera result:
+The host must forward only the Activity callbacks required by selected
+features. Geolocation requires the permission callback:
 
 ```kotlin
 override fun onRequestPermissionsResult(
@@ -65,21 +95,25 @@ override fun onRequestPermissionsResult(
     permissions: Array<out String>,
     grantResults: IntArray,
 ) {
-    if (!LynxAndroidPlugins.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+    if (!LynxGeolocationPlugin.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
+```
 
+Camera additionally requires the external Activity result:
+
+```kotlin
 @Deprecated("Needed for the external camera intent result")
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (!LynxAndroidPlugins.onActivityResult(requestCode, resultCode, data)) {
+    if (!LynxCameraPlugin.onActivityResult(requestCode, resultCode, data)) {
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
 ```
 
-The `android-plugin` manifest merge adds location and vibration permissions plus
-the `FileProvider` needed for a captured photo. It does not request `CAMERA`:
+The selected feature manifests merge only their own requirements. Camera adds
+the `FileProvider` needed for a captured photo; it does not request `CAMERA`:
 the first version uses the device camera application through
 `ACTION_IMAGE_CAPTURE`, and that application owns the permission. Applications
 that need their own preview or capture control can add CameraX in a later
@@ -127,7 +161,7 @@ NativeModules.LynxGeolocationPlugin.getCurrentPosition(requestId, true);
 ## Verification
 
 ```sh
-./gradlew :android-plugin:assembleDebug :demo-host:assembleDebug
+./gradlew :android-all:assembleDebug :demo-host:assembleDebug
 bun run check
 bun run build:examples
 ```

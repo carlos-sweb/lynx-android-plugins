@@ -1,0 +1,1 @@
+-keep class dev.lynx.android.plugins.geolocation.** { *; }
