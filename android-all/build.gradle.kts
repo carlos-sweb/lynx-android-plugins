@@ -9,6 +9,7 @@ android {
     defaultConfig { minSdk = 24; consumerProguardFiles("consumer-rules.pro") }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
+    publishing { singleVariant("release") { withSourcesJar() } }
 }
 
 dependencies {
@@ -20,3 +21,7 @@ dependencies {
     implementation(project(":android-network"))
     implementation(project(":android-vibration"))
 }
+
+extra["mavenArtifactId"] = "lynx-android-plugins"
+extra["mavenDescription"] = "All Android connectors for Lynx in one convenience artifact."
+apply(from = rootProject.file("gradle/publish-library.gradle.kts"))

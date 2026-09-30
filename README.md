@@ -24,6 +24,37 @@ bounded to the selected capabilities.
 `android-all` preserves the original all-in-one registration API for the demo
 host. Production applications should depend on individual feature modules.
 
+## Maven coordinates
+
+The first release uses group `io.github.carlos-sweb` and version `0.1.0`.
+These coordinates are defined and verified with `mavenLocal()`; they are not
+published to Maven Central until the signing and Portal-upload stage is
+complete.
+
+| Gradle module | Maven artifact |
+| --- | --- |
+| `:android-core` | `io.github.carlos-sweb:lynx-android-core:0.1.0` |
+| `:android-battery` | `io.github.carlos-sweb:lynx-android-battery:0.1.0` |
+| `:android-camera` | `io.github.carlos-sweb:lynx-android-camera:0.1.0` |
+| `:android-device` | `io.github.carlos-sweb:lynx-android-device:0.1.0` |
+| `:android-geolocation` | `io.github.carlos-sweb:lynx-android-geolocation:0.1.0` |
+| `:android-network` | `io.github.carlos-sweb:lynx-android-network:0.1.0` |
+| `:android-vibration` | `io.github.carlos-sweb:lynx-android-vibration:0.1.0` |
+| `:android-all` | `io.github.carlos-sweb:lynx-android-plugins:0.1.0` |
+
+For local consumption after running `./gradlew publishToMavenLocal`:
+
+```kotlin
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.github.carlos-sweb:lynx-android-geolocation:0.1.0")
+}
+```
+
 ## Included plugins
 
 | Lynx module | Initial operation | Permission / boundary |
@@ -162,6 +193,7 @@ NativeModules.LynxGeolocationPlugin.getCurrentPosition(requestId, true);
 
 ```sh
 ./gradlew :android-all:assembleDebug :demo-host:assembleDebug
+./gradlew publishToMavenLocal
 bun run check
 bun run build:examples
 ```

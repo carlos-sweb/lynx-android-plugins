@@ -18,8 +18,14 @@ android {
     }
 
     kotlinOptions { jvmTarget = "17" }
+
+    publishing { singleVariant("release") { withSourcesJar() } }
 }
 
 dependencies {
     api("org.lynxsdk.lynx:lynx:4.1.0")
 }
+
+extra["mavenArtifactId"] = "lynx-android-core"
+extra["mavenDescription"] = "Shared event bridge for Lynx Android plugins."
+apply(from = rootProject.file("gradle/publish-library.gradle.kts"))
