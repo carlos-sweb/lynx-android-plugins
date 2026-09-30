@@ -15,6 +15,7 @@ val centralModules = listOf(
     ":android-geolocation",
     ":android-network",
     ":android-vibration",
+    ":android-maps",
     ":android-all",
 )
 val centralRepositoryDirectory = layout.buildDirectory.dir("central-staging/repository")

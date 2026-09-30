@@ -1,0 +1,26 @@
+{
+  "name": "lynx-android-plugins",
+  "version": "0.2.0",
+  "description": "Typed JavaScript facades for Lynx Android plugins",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/carlos-sweb/lynx-android-plugins.git", "directory": "packages/js" },
+  "files": ["dist", "README.md", "docs"],
+  "exports": {
+    "./battery": { "types": "./dist/battery.d.ts", "default": "./dist/battery.js" },
+    "./camera": { "types": "./dist/camera.d.ts", "default": "./dist/camera.js" },
+    "./device": { "types": "./dist/device.d.ts", "default": "./dist/device.js" },
+    "./geolocation": { "types": "./dist/geolocation.d.ts", "default": "./dist/geolocation.js" },
+    "./network": { "types": "./dist/network.d.ts", "default": "./dist/network.js" },
+    "./vibration": { "types": "./dist/vibration.d.ts", "default": "./dist/vibration.js" },
+    "./maps": { "types": "./dist/maps.d.ts", "default": "./dist/maps.js" }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "bun build src/battery.ts src/camera.ts src/device.ts src/geolocation.ts src/network.ts src/vibration.ts src/maps.ts --target browser --format esm --external mithril-runtime --outdir dist && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "check": "tsc --noEmit",
+    "prepack": "bun run build && bun ../../tools/sync-maps-docs.mjs"
+  },
+  "peerDependencies": { "mithril-runtime": "^1.1.0" },
+  "dependencies": { "@types/mithril": "^2.2.9" }
+}

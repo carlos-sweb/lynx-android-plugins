@@ -20,21 +20,55 @@
     },
     "examples/battery": {
       "name": "@lynx-android-plugins/example-battery",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
     },
     "examples/camera": {
       "name": "@lynx-android-plugins/example-camera",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
     },
     "examples/device": {
       "name": "@lynx-android-plugins/example-device",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
     },
     "examples/geolocation": {
       "name": "@lynx-android-plugins/example-geolocation",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
+    },
+    "examples/maps": {
+      "name": "@lynx-android-plugins/example-maps",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
     },
     "examples/network": {
       "name": "@lynx-android-plugins/example-network",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
     },
     "examples/vibration": {
       "name": "@lynx-android-plugins/example-vibration",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
+    },
+    "packages/js": {
+      "name": "lynx-android-plugins",
+      "version": "0.2.0",
+      "dependencies": {
+        "@types/mithril": "^2.2.9",
+      },
+      "peerDependencies": {
+        "mithril-runtime": "^1.1.0",
+      },
     },
   },
   "packages": {
@@ -101,6 +135,8 @@
     "@lynx-android-plugins/example-device": ["@lynx-android-plugins/example-device@workspace:examples/device"],
 
     "@lynx-android-plugins/example-geolocation": ["@lynx-android-plugins/example-geolocation@workspace:examples/geolocation"],
+
+    "@lynx-android-plugins/example-maps": ["@lynx-android-plugins/example-maps@workspace:examples/maps"],
 
     "@lynx-android-plugins/example-network": ["@lynx-android-plugins/example-network@workspace:examples/network"],
 
@@ -605,6 +641,8 @@
     "lodash.memoize": ["lodash.memoize@4.1.2", "", {}, "sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag=="],
 
     "lodash.uniq": ["lodash.uniq@4.5.0", "", {}, "sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ=="],
+
+    "lynx-android-plugins": ["lynx-android-plugins@workspace:packages/js"],
 
     "markdown-it": ["markdown-it@15.0.2", "", { "dependencies": { "argparse": "^3.0.0", "entities": "^8.0.0", "linkify-it": "^6.0.0", "mdurl": "^2.1.0", "punycode.js": "^2.3.1", "uc.micro": "^3.0.0" }, "bin": { "markdown-it": "bin/markdown-it.mjs" } }, "sha512-q4IGxMv56jCqT4OCRCADBoDP3LO4MhmTXjFbphHPXs4g3j9Xg5RDnxqN8IF/3vIWEU+VCnUq+7JUg/cfy2E6Qw=="],
 

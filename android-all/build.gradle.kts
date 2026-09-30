@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":android-geolocation"))
     implementation(project(":android-network"))
     implementation(project(":android-vibration"))
+    implementation(project(":android-maps"))
 }
 
 extra["mavenArtifactId"] = "lynx-android-plugins"

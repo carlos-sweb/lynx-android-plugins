@@ -1,0 +1,1 @@
+{"name":"@lynx-android-plugins/example-maps","private":true,"type":"module","scripts":{"dev":"rspeedy dev","build":"rspeedy build","check":"tsc --noEmit"},"dependencies":{"lynx-android-plugins":"workspace:*"}}

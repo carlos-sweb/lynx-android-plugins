@@ -2,10 +2,14 @@
   "name": "lynx-android-plugins-workspace",
   "private": true,
   "type": "module",
-  "workspaces": ["examples/*"],
+  "workspaces": ["examples/*", "packages/js"],
   "scripts": {
-    "check": "bun --workspaces run check",
-    "build:examples": "bun --workspaces run build",
+    "check": "bun run build:packages && bun --workspaces run check",
+    "build:examples": "bun run build:packages && bun run --filter '@lynx-android-plugins/*' build",
+    "build:packages": "bun run --filter lynx-android-plugins build",
+    "check:packages": "bun run --filter lynx-android-plugins check",
+    "check:maps-docs": "bun run build:packages && bun tools/sync-maps-docs.mjs && bun tools/check-maps-docs.mjs",
+    "test:packages": "bun test packages/shared/bridge.test.ts packages/js/tests",
     "central:bundle": "./gradlew prepareCentralBundle",
     "central:upload": "node tools/central-upload.mjs",
     "central:status": "node tools/central-status.mjs"

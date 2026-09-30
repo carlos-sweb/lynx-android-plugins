@@ -1,6 +1,25 @@
 import m from "mithril-runtime";
 import { redraw } from "mithril-lynx/mount-redraw";
+import { network } from "lynx-android-plugins/network";
 import "../../../shared/style.css";
-let result = "Press the button to read network state."; let notice = "";
-function getNetwork() { const plugin = (NativeModules as any).LynxNetworkPlugin; if (!plugin) { notice = "Lynx Go does not include this repository's network plugin. Use the Android demonstration host."; redraw(); return; } const requestId = `network-${Date.now()}`; const emitter = lynx.getJSModule("GlobalEventEmitter"); const listener = (event: any) => { if (event?.requestId !== requestId) return; emitter.removeListener("lynxAndroidPlugins:network", listener); result = event.ok ? `${event.data.online ? "Connected" : "No Internet"}\n${event.data.type} · ${event.data.metered ? "metered" : "unmetered"}` : event.data.message; redraw(); }; emitter.addListener("lynxAndroidPlugins:network", listener); plugin.getInfo(requestId); }
-export function view() { return m("view", { class: "Page" }, [m("text", { class: "Title" }, "Network"), m("text", { class: "Subtitle" }, "Network state and transport"), m("text", { class: "Result" }, result), m("view", { class: "Button", bindtap: getNetwork }, m("text", { class: "ButtonText" }, "Read network")), notice && m("text", { class: "Notice" }, notice)]); }
+
+let result = "Press the button to read network state.";
+
+async function readNetwork() {
+  try {
+    const info = await network.get();
+    result = `${info.online ? "Connected" : "No Internet"}\n${info.type} · ${info.metered ? "metered" : "unmetered"}`;
+  } catch (error) {
+    result = error instanceof Error ? error.message : String(error);
+  }
+  redraw();
+}
+
+export function view() {
+  return m("view", { class: "Page" }, [
+    m("text", { class: "Title" }, "Network"),
+    m("text", { class: "Subtitle" }, "Network state and transport"),
+    m("text", { class: "Result" }, result),
+    m("view", { class: "Button", ontap: readNetwork }, m("text", { class: "ButtonText" }, "Read network")),
+  ]);
+}

@@ -8,6 +8,7 @@ import dev.lynx.android.plugins.device.LynxDevicePlugin
 import dev.lynx.android.plugins.geolocation.LynxGeolocationPlugin
 import dev.lynx.android.plugins.network.LynxNetworkPlugin
 import dev.lynx.android.plugins.vibration.LynxVibrationPlugin
+import dev.lynx.android.plugins.maps.LynxMapsPlugin
 
 /**
  * Convenience registry for applications that deliberately use every plugin.
@@ -23,6 +24,7 @@ object LynxAndroidPlugins {
         LynxGeolocationPlugin.register(builder)
         LynxNetworkPlugin.register(builder)
         LynxVibrationPlugin.register(builder)
+        LynxMapsPlugin.register(builder)
     }
 
     /** Returns true when any registered plugin consumed the permission result. */
@@ -30,7 +32,8 @@ object LynxAndroidPlugins {
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray,
-    ): Boolean = LynxGeolocationPlugin.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    ): Boolean = LynxGeolocationPlugin.onRequestPermissionsResult(requestCode, permissions, grantResults) ||
+        LynxMapsPlugin.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
     /** Returns true when any registered plugin consumed the Activity result. */
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean =
