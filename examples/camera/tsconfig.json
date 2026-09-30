@@ -1,0 +1,1 @@
+{"compilerOptions":{"strict":true,"isolatedModules":true,"verbatimModuleSyntax":true,"esModuleInterop":true,"skipLibCheck":true,"target":"ES2022","lib":["ES2023"],"module":"ESNext","moduleResolution":"Bundler","noEmit":true},"include":["src/**/*.ts","lynx.config.ts","../../../shared/rspeedy-env.d.ts","../../../shared/ambient.d.ts"]}

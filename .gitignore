@@ -1,0 +1,9 @@
+.gradle/
+build/
+**/build/
+.idea/
+local.properties
+node_modules/
+dist/
+demo-host/src/main/assets/main-thread.bundle
+.DS_Store

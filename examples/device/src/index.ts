@@ -1,0 +1,6 @@
+import m from "mithril-runtime";
+import { redraw } from "mithril-lynx/mount-redraw";
+import "../../../shared/style.css";
+let result = "Press the button to read device information."; let notice = "";
+function getDevice() { const plugin = (NativeModules as any).LynxDevicePlugin; if (!plugin) { notice = "Lynx Go does not include this native plugin. Use the Android demonstration host."; redraw(); return; } const requestId = `device-${Date.now()}`; const emitter = lynx.getJSModule("GlobalEventEmitter"); const listener = (event: any) => { if (event?.requestId !== requestId) return; emitter.removeListener("lynxAndroidPlugins:device", listener); result = event.ok ? `${event.data.manufacturer} ${event.data.model}\nAndroid ${event.data.osVersion} · API ${event.data.apiLevel}` : event.data.message; redraw(); }; emitter.addListener("lynxAndroidPlugins:device", listener); plugin.getInfo(requestId); }
+export function view() { return m("view", { class: "Page" }, [m("text", { class: "Title" }, "Device"), m("text", { class: "Subtitle" }, "Non-identifying device information"), m("text", { class: "Result" }, result), m("view", { class: "Button", bindtap: getDevice }, m("text", { class: "ButtonText" }, "Read device")), notice && m("text", { class: "Notice" }, notice)]); }

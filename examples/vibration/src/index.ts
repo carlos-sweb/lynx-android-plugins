@@ -1,0 +1,6 @@
+import m from "mithril-runtime";
+import { redraw } from "mithril-lynx/mount-redraw";
+import "../../../shared/style.css";
+let result = "Press the button to vibrate for 300 ms."; let notice = "";
+function vibrate() { const plugin = (NativeModules as any).LynxVibrationPlugin; if (!plugin) { notice = "Lynx Go does not include this vibration plugin. Use the Android demonstration host."; redraw(); return; } const requestId = `vibration-${Date.now()}`; const emitter = lynx.getJSModule("GlobalEventEmitter"); const listener = (event: any) => { if (event?.requestId !== requestId) return; emitter.removeListener("lynxAndroidPlugins:vibration", listener); result = event.ok ? `Sent a ${event.data.durationMs} ms vibration.` : event.data.message; redraw(); }; emitter.addListener("lynxAndroidPlugins:vibration", listener); plugin.vibrate(requestId, 300); }
+export function view() { return m("view", { class: "Page" }, [m("text", { class: "Title" }, "Vibration"), m("text", { class: "Subtitle" }, "A brief, bounded, cancelable vibration"), m("text", { class: "Result" }, result), m("view", { class: "Button", bindtap: vibrate }, m("text", { class: "ButtonText" }, "Vibrate")), notice && m("text", { class: "Notice" }, notice)]); }
