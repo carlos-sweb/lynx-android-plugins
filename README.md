@@ -27,9 +27,8 @@ host. Production applications should depend on individual feature modules.
 ## Maven coordinates
 
 The first release uses group `io.github.carlos-sweb` and version `0.1.0`.
-These coordinates are defined and verified with `mavenLocal()`; they are not
-published to Maven Central until the signing and Portal-upload stage is
-complete.
+These coordinates are defined and verified with `mavenLocal()`. Releases to
+Maven Central use the manual Portal workflow documented below.
 
 | Gradle module | Maven artifact |
 | --- | --- |
@@ -54,6 +53,67 @@ dependencies {
     implementation("io.github.carlos-sweb:lynx-android-geolocation:0.1.0")
 }
 ```
+
+## Manual Maven Central release
+
+This repository deliberately prepares and uploads a deployment but does not
+publish it automatically. The last publish action remains a deliberate action
+in the Maven Central Portal.
+
+Before a release, create a Maven Central Portal user token and upload the
+corresponding public PGP key to a public key server. Keep the private key and
+Portal token out of the repository. The uploader reads a single `<server>`
+entry from the ignored `maven.xml` by default; environment variables remain an
+alternative.
+
+```sh
+export GPG_PRIVATE_KEY="$(gpg --armor --export-secret-keys <key-id>)"
+export GPG_PASSPHRASE="<private-key-passphrase>"
+export CENTRAL_USERNAME="<portal-token-username>"
+export CENTRAL_PASSWORD="<portal-token-password>"
+
+bun run central:bundle
+bun run central:upload
+```
+
+When the release key is already in the local GPG keyring, do not export it.
+Use the local GPG command instead:
+
+```sh
+export GPG_USE_COMMAND=true
+bun run central:bundle
+```
+
+For a local `maven.xml`, use this shape (the file is ignored by Git):
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>central</id>
+      <username>portal-token-username</username>
+      <password>portal-token-password</password>
+    </server>
+  </servers>
+</settings>
+```
+
+`central:bundle` publishes all eight Android artifacts to a temporary local
+repository, produces source and Javadoc JARs, signs every Maven artifact, adds
+checksums, and writes a Portal bundle to
+`build/central-bundle/lynx-android-plugins-<version>.zip`.
+
+`central:upload` submits the bundle with `publishingType=USER_MANAGED`. It
+prints the deployment ID without publishing it. Check validation with:
+
+```sh
+bun run central:status -- <deployment-id>
+```
+
+When the deployment status is `VALIDATED`, open it in the Maven Central Portal
+and use its Publish action. Do not run the upload script with an account
+password: `CENTRAL_USERNAME` and `CENTRAL_PASSWORD` must be the two values of a
+Portal user token.
 
 ## Included plugins
 

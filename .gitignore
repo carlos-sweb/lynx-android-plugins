@@ -3,6 +3,9 @@ build/
 **/build/
 .idea/
 local.properties
+# Local Maven Central credentials and PGP key material.
+maven.xml
+maven-pgp-*
 node_modules/
 dist/
 demo-host/src/main/assets/main-thread.bundle

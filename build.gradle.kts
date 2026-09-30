@@ -7,3 +7,5 @@ allprojects {
     group = providers.gradleProperty("GROUP").get()
     version = providers.gradleProperty("VERSION_NAME").get()
 }
+
+apply(from = "gradle/central-bundle.gradle.kts")

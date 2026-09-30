@@ -5,7 +5,10 @@
   "workspaces": ["examples/*"],
   "scripts": {
     "check": "bun --workspaces run check",
-    "build:examples": "bun --workspaces run build"
+    "build:examples": "bun --workspaces run build",
+    "central:bundle": "./gradlew prepareCentralBundle",
+    "central:upload": "node tools/central-upload.mjs",
+    "central:status": "node tools/central-status.mjs"
   },
   "devDependencies": {
     "@lynx-js/config-rsbuild-plugin": "^0.2.0",
