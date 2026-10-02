@@ -62,7 +62,7 @@
     },
     "packages/js": {
       "name": "lynx-android-plugins",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "dependencies": {
         "@types/mithril": "^2.2.9",
       },

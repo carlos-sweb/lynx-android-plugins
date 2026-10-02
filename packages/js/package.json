@@ -1,11 +1,11 @@
 {
   "name": "lynx-android-plugins",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Typed JavaScript facades for Lynx Android plugins",
   "type": "module",
   "license": "MIT",
   "repository": { "type": "git", "url": "git+https://github.com/carlos-sweb/lynx-android-plugins.git", "directory": "packages/js" },
-  "files": ["dist", "README.md", "docs"],
+  "files": ["dist", "README.md", "docs", "LICENSE"],
   "exports": {
     "./battery": { "types": "./dist/battery.d.ts", "default": "./dist/battery.js" },
     "./camera": { "types": "./dist/camera.d.ts", "default": "./dist/camera.js" },

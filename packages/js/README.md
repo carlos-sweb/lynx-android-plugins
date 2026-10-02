@@ -1,34 +1,56 @@
 # lynx-android-plugins
 
-Typed JavaScript facades for the Android modules in this repository. Install this package in a Lynx app whose Android host registers the matching native connector.
+Promise-based JavaScript APIs for Android features in a Lynx app. Each feature
+uses a native plugin registered by the app's Android host.
 
-```bash
-bun add lynx-android-plugins
+## Install
+
+```sh
+npm install lynx-android-plugins
 ```
 
-Import only the capability you need:
+For an app created with `create-mithril-lynx`, enable the matching native
+plugin from the app directory:
+
+```sh
+npx create-mithril-lynx add-android-plugin battery
+```
+
+## Read battery status
 
 ```ts
-import { gps } from "lynx-android-plugins/geolocation";
+import { battery } from "lynx-android-plugins/battery";
 
-const position = await gps.get({ highAccuracy: true });
-console.log(position.latitude, position.longitude);
+async function readBattery() {
+  try {
+    const status = await battery.get();
+    const level = status.level < 0
+      ? "Unknown"
+      : `${Math.round(status.level * 100)}%`;
+
+    console.log(`Battery: ${level}`);
+    console.log(status.charging ? "Charging" : "Not charging");
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error));
+  }
+}
 ```
 
-Other connector subpaths are `battery`, `camera`, `device`, `network`, and `vibration`. Each exports a named capability object and `ConnectorError`. Every connector capability has `isAvailable()` to check native registration. Methods return Promises and reject with a coded `ConnectorError` on failure.
+## Other features
 
-`gps.get()` requests one foreground position and Android location permission when needed. The provider can be GPS or network. The published native module does not expose permission/provider status separately, so this package does not offer `gps.getStatus()` or continuous tracking.
+Import only the subpaths your app needs:
 
-The separate `lynx-android-plugins/maps` subpath exports a Mithril component for the native Android map surface:
+- `lynx-android-plugins/camera` — `camera.takePhoto()`
+- `lynx-android-plugins/device` — `device.get()`
+- `lynx-android-plugins/geolocation` — `gps.get({ highAccuracy? })`
+- `lynx-android-plugins/network` — `network.get()`
+- `lynx-android-plugins/vibration` — `vibration.vibrate(ms)` and `vibration.cancel()`
+- `lynx-android-plugins/maps` — native Maps component; see the [Maps guide](docs/maps.md)
 
-Read the [complete Maps API guide](docs/maps.md) for controllers, events, layers,
-foreground location, offline catalogs, snapshots and optional providers.
+Connector methods return Promises and reject with `ConnectorError` on failure.
+Each connector has `isAvailable()` to check whether the Android host registered
+it. A JavaScript package install by itself does not add native plugins to a
+custom Android host.
 
-```ts
-import m from "mithril-runtime";
-import { Maps } from "lynx-android-plugins/maps";
-
-m(Maps, { latitude: -33.532290, longitude: -71.584904, variant: "full" });
-```
-
-It needs an Android host with the `lynx-android-maps` Maven artifact, a sized parent element, and a configured `android/maps.json` containing an HTTPS archive URL, SHA-256, and version. The app prompts for the download in its native map surface.
+The Maps component also needs a configured offline archive and a sized parent
+element. See the [Maps guide](docs/maps.md) for setup and examples.
