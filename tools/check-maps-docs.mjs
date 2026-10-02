@@ -20,4 +20,5 @@ for (const [file, link] of [["README.md", "docs/maps.md"], ["packages/js/README.
   if (!readFileSync(resolve(root, file), "utf8").includes(`](${link})`) || !existsSync(resolve(root, file, "..", link))) throw new Error(`Missing Maps guide link in ${file}.`);
 }
 if (readFileSync(resolve(root, "packages/js/docs/maps.md"), "utf8") !== guide) throw new Error("Run tools/sync-maps-docs.mjs before packaging.");
-console.log(`Validated ${blocks.length} TypeScript examples, README links, and the packaged guide.`);
+if (readFileSync(resolve(root, "packages/js/README.md"), "utf8") !== readFileSync(resolve(root, "README.md"), "utf8")) throw new Error("Run tools/sync-package-readme.mjs before packaging.");
+console.log(`Validated ${blocks.length} TypeScript examples, README links, and package documentation copies.`);

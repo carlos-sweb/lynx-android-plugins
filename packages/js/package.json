@@ -19,7 +19,7 @@
   "scripts": {
     "build": "bun build src/battery.ts src/camera.ts src/device.ts src/geolocation.ts src/network.ts src/vibration.ts src/maps.ts --target browser --format esm --external mithril-runtime --outdir dist && tsc --declaration --emitDeclarationOnly --outDir dist",
     "check": "tsc --noEmit",
-    "prepack": "bun run build && bun ../../tools/sync-maps-docs.mjs"
+    "prepack": "bun run build && bun ../../tools/sync-maps-docs.mjs && bun ../../tools/sync-package-readme.mjs"
   },
   "peerDependencies": { "mithril-runtime": "^1.1.0" },
   "dependencies": { "@types/mithril": "^2.2.9" }
