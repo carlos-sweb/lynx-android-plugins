@@ -1,6 +1,6 @@
 {
   "name": "lynx-android-plugins",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Typed JavaScript facades for Lynx Android plugins",
   "type": "module",
   "license": "MIT",
@@ -13,11 +13,12 @@
     "./geolocation": { "types": "./dist/geolocation.d.ts", "default": "./dist/geolocation.js" },
     "./network": { "types": "./dist/network.d.ts", "default": "./dist/network.js" },
     "./vibration": { "types": "./dist/vibration.d.ts", "default": "./dist/vibration.js" },
-    "./maps": { "types": "./dist/maps.d.ts", "default": "./dist/maps.js" }
+    "./maps": { "types": "./dist/maps.d.ts", "default": "./dist/maps.js" },
+    "./sqlite": { "types": "./dist/sqlite.d.ts", "default": "./dist/sqlite.js" }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "bun build src/battery.ts src/camera.ts src/device.ts src/geolocation.ts src/network.ts src/vibration.ts src/maps.ts --target browser --format esm --external mithril-runtime --outdir dist && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "bun build src/battery.ts src/camera.ts src/device.ts src/geolocation.ts src/network.ts src/vibration.ts src/maps.ts src/sqlite.ts --target browser --format esm --external mithril-runtime --outdir dist && tsc --declaration --emitDeclarationOnly --outDir dist",
     "check": "tsc --noEmit",
     "prepack": "bun run build && bun ../../tools/sync-maps-docs.mjs && bun ../../tools/sync-package-readme.mjs"
   },

@@ -24,6 +24,8 @@ dependencies {
     implementation(project(":android-all"))
     implementation("org.lynxsdk.lynx:lynx:4.1.0")
     implementation("org.lynxsdk.lynx:lynx-service-image:4.1.0")
+    implementation("org.lynxsdk.lynx:xelement:4.1.0")
+    implementation("org.lynxsdk.lynx:xelement-input:4.1.0")
     implementation("com.facebook.fresco:fresco:2.3.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
 }

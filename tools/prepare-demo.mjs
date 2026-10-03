@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const feature = process.argv[2];
-const allowed = new Set(["battery", "camera", "device", "geolocation", "network", "vibration", "maps"]);
+const allowed = new Set(["battery", "camera", "device", "geolocation", "network", "vibration", "maps", "sqlite", "todo"]);
 if (!allowed.has(feature)) {
   throw new Error(`Usage: bun tools/prepare-demo.mjs <${[...allowed].join("|")}>`);
 }

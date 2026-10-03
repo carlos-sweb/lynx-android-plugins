@@ -54,6 +54,18 @@
         "lynx-android-plugins": "workspace:*",
       },
     },
+    "examples/sqlite": {
+      "name": "@lynx-android-plugins/example-sqlite",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
+    },
+    "examples/todo": {
+      "name": "@lynx-android-plugins/example-todo",
+      "dependencies": {
+        "lynx-android-plugins": "workspace:*",
+      },
+    },
     "examples/vibration": {
       "name": "@lynx-android-plugins/example-vibration",
       "dependencies": {
@@ -62,7 +74,7 @@
     },
     "packages/js": {
       "name": "lynx-android-plugins",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "dependencies": {
         "@types/mithril": "^2.2.9",
       },
@@ -139,6 +151,10 @@
     "@lynx-android-plugins/example-maps": ["@lynx-android-plugins/example-maps@workspace:examples/maps"],
 
     "@lynx-android-plugins/example-network": ["@lynx-android-plugins/example-network@workspace:examples/network"],
+
+    "@lynx-android-plugins/example-sqlite": ["@lynx-android-plugins/example-sqlite@workspace:examples/sqlite"],
+
+    "@lynx-android-plugins/example-todo": ["@lynx-android-plugins/example-todo@workspace:examples/todo"],
 
     "@lynx-android-plugins/example-vibration": ["@lynx-android-plugins/example-vibration@workspace:examples/vibration"],
 

@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":android-network"))
     implementation(project(":android-vibration"))
     implementation(project(":android-maps"))
+    implementation(project(":android-sqlite"))
 }
 
 extra["mavenArtifactId"] = "lynx-android-plugins"

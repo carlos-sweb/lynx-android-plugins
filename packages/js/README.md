@@ -2,7 +2,8 @@
 
 Use Android device features from JavaScript in a Lynx app. The package provides
 Promise-based APIs for battery status, camera capture, device information,
-foreground location, network status, vibration, and native maps.
+foreground location, network status, vibration, native maps, and SQLite storage
+with a typed `qb` query builder that binds parameters and validates identifiers.
 
 ## Quick Start
 
@@ -17,7 +18,7 @@ npm install
 ```
 
 Replace `geolocation` with one or more of `battery`,
-`camera`, `device`, `network`, `vibration`, or `maps` to select other plugins.
+`camera`, `device`, `network`, `vibration`, `maps`, or `sqlite` to select other plugins.
 See the [`create-mithril-lynx` Android connector guide](https://github.com/carlos-sweb/create-mithril-lynx#with-android-connectors).
 
 ## Use your first plugin
@@ -97,6 +98,7 @@ host registered it.
 | `lynx-android-plugins/network` | `network.get()` | Reads current connection status and type. |
 | `lynx-android-plugins/vibration` | `vibration.vibrate(ms)`, `vibration.cancel()` | Starts or cancels a bounded vibration. |
 | `lynx-android-plugins/maps` | `Maps` | Renders a native offline map. [Maps setup and API](docs/maps.md). |
+| `lynx-android-plugins/sqlite` | `sqlite.open(...)`, `qb` | Opens an app-private SQLite database. Prefer `qb` for safe parameterized queries. [SQLite setup and API](docs/sqlite.md); [to-do example](examples/todo/). |
 
 ### Read battery status
 
@@ -121,6 +123,45 @@ async function readBattery() {
 }
 ```
 
+### Store data with SQLite and `qb`
+
+Import `sqlite` and `qb` from the same entry. Open an app-private database, then
+build reads and writes with the query builder so values stay parameterized and
+table or column names are validated:
+
+```ts
+import { sqlite, qb } from "lynx-android-plugins/sqlite";
+
+async function listOpenTasks(search: string) {
+  const db = await sqlite.open({
+    name: "tasks",
+    version: 1,
+    migrations: [{ to: 1, statements: [
+      "CREATE TABLE tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0)",
+    ] }],
+  });
+  try {
+    await qb.insertInto("tasks").values({ title: "Buy milk" }).execute(db);
+    const { rows } = await qb
+      .select("id", "title")
+      .from("tasks")
+      .where("done", "=", 0)
+      .and("title", "LIKE", `%${search}%`)
+      .orderBy("id", "DESC")
+      .limit(50)
+      .query(db);
+    return rows;
+  } finally {
+    await db.close();
+  }
+}
+```
+
+`qb` covers select/insert/update/delete, joins, `groupBy` / `having`, nested
+predicates, and upsert helpers. Full API and SQL-injection rules:
+[SQLite guide](docs/sqlite.md). Try the [to-do example](examples/todo/) with
+`bun tools/prepare-demo.mjs todo`.
+
 ## Try an example from this repository
 
 To build and install the geolocation example, clone this repository and run
@@ -137,8 +178,9 @@ bun tools/prepare-demo.mjs geolocation
 ```
 
 Open **Lynx Android Plugins** on the device to launch the installed demo. You
-can substitute `geolocation` with `battery`, `camera`, `device`, `network`, or
-`vibration`. Maps needs its own archive configuration; follow the [Maps guide](docs/maps.md).
+can substitute `geolocation` with `battery`, `camera`, `device`, `network`,
+`vibration`, `sqlite`, or `todo`. Maps needs its own archive configuration;
+follow the [Maps guide](docs/maps.md).
 
 ## Compatibility
 

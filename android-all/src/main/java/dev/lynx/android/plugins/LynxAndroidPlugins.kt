@@ -9,6 +9,7 @@ import dev.lynx.android.plugins.geolocation.LynxGeolocationPlugin
 import dev.lynx.android.plugins.network.LynxNetworkPlugin
 import dev.lynx.android.plugins.vibration.LynxVibrationPlugin
 import dev.lynx.android.plugins.maps.LynxMapsPlugin
+import dev.lynx.android.plugins.sqlite.LynxSqlitePlugin
 
 /**
  * Convenience registry for applications that deliberately use every plugin.
@@ -25,6 +26,7 @@ object LynxAndroidPlugins {
         LynxNetworkPlugin.register(builder)
         LynxVibrationPlugin.register(builder)
         LynxMapsPlugin.register(builder)
+        LynxSqlitePlugin.register(builder)
     }
 
     /** Returns true when any registered plugin consumed the permission result. */
